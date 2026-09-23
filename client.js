@@ -9,7 +9,7 @@ window.TrelloPowerUp.initialize({
 
         return t.popup({
           title: '💬 Badfellas Chat',
-          url: './chat.html?v=12',
+          url: './chat.html?v=13',
           height: 650
         });
 
