@@ -10,7 +10,6 @@
 :root {
   --bg: #020b13;
   --panel: #04131f;
-  --panel2: #061a29;
   --cyan: #16d5ff;
   --cyan-dark: #087da5;
   --text: #f2f8fc;
@@ -33,63 +32,30 @@ body {
 body {
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
-
-  background:
-    radial-gradient(
-      circle at 50% 0%,
-      rgba(13, 112, 151, .16),
-      transparent 35%
-    ),
-    #020b13;
-
+  background: #020b13;
   overflow: hidden;
 }
 
-
-/* =========================
-   BUITENKANT
-========================= */
-
-.page {
-  width: 100%;
-  height: 100vh;
-
-  display: flex;
-  justify-content: center;
-
-  padding: 10px;
-}
-
-
-/*
-  Dit maakt de chat bewust smaller.
-  Op een breed Trello-scherm blijft
-  hij dus als echte chatkolom staan.
-*/
-
 .chat-app {
   width: 100%;
-  max-width: 520px;
-  height: 100%;
+  height: 100vh;
 
   display: flex;
   flex-direction: column;
 
   overflow: hidden;
 
-  border: 1px solid #075e7e;
-  border-radius: 18px;
-
   background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(13, 112, 151, .15),
+      transparent 35%
+    ),
     linear-gradient(
       180deg,
       #03111c,
       #020b13
     );
-
-  box-shadow:
-    0 20px 50px
-    rgba(0, 0, 0, .28);
 }
 
 
@@ -98,18 +64,17 @@ body {
 ========================= */
 
 .header {
-  min-height: 82px;
+  min-height: 72px;
 
-  padding: 13px 16px;
+  padding: 11px 13px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  gap: 12px;
+  gap: 10px;
 
-  border-bottom:
-    1px solid #075e7e;
+  border-bottom: 1px solid #075e7e;
 
   background:
     linear-gradient(
@@ -122,24 +87,24 @@ body {
 .brand {
   display: flex;
   align-items: center;
-  gap: 11px;
+
+  gap: 9px;
 
   min-width: 0;
 }
 
 .brand-icon {
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
 
-  min-width: 45px;
+  min-width: 40px;
 
   display: grid;
   place-items: center;
 
   border-radius: 50%;
 
-  border:
-    1px solid #0c759b;
+  border: 1px solid #0c759b;
 
   background:
     linear-gradient(
@@ -148,48 +113,50 @@ body {
       #04131f
     );
 
-  font-size: 23px;
+  font-size: 20px;
 }
 
 .brand-name {
-  font-size: 19px;
+  color: #9bdcff;
+
+  font-size: 17px;
   font-weight: 800;
 
-  letter-spacing: 1.5px;
-
-  color: #9bdcff;
+  letter-spacing: 1px;
 }
 
 .brand-subtitle {
-  margin-top: 4px;
-
-  font-size: 7px;
-
-  letter-spacing: 2px;
+  margin-top: 3px;
 
   color: #5c91b4;
 
-  white-space: nowrap;
+  font-size: 6px;
+
+  letter-spacing: 1.4px;
 }
 
-.header-status {
-  text-align: right;
 
-  font-size: 10px;
+/* =========================
+   HEADER RECHTS
+========================= */
 
-  color: #73a2bf;
-
-  white-space: nowrap;
-}
-
-.status-line {
-  margin-top: 5px;
-
+.header-actions {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
 
   gap: 6px;
+}
+
+.online {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #76a6c3;
+
+  font-size: 9px;
 }
 
 .online-dot {
@@ -201,37 +168,66 @@ body {
   background: var(--green);
 
   box-shadow:
-    0 0 8px
-    rgba(34, 223, 101, .65);
+    0 0 7px
+    rgba(34, 223, 101, .6);
 }
 
 
 /* =========================
-   TITEL
+   DELETE ALL
+========================= */
+
+.delete-all {
+  padding: 5px 8px;
+
+  border: 1px solid
+    rgba(255, 100, 117, .45);
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  color: #ff9aa6;
+
+  background:
+    rgba(255, 100, 117, .08);
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.delete-all:hover {
+  color: white;
+
+  border-color: var(--danger);
+
+  background:
+    rgba(255, 100, 117, .22);
+}
+
+
+/* =========================
+   CHAT TITEL
 ========================= */
 
 .chat-heading {
-  padding: 13px 17px 10px;
+  padding: 9px 13px;
 
   border-bottom:
     1px solid
     rgba(7, 94, 126, .35);
 }
 
-.chat-heading h1 {
-  margin: 0;
-
-  font-size: 15px;
-
-  letter-spacing: .3px;
+.chat-heading strong {
+  font-size: 12px;
 }
 
-.chat-heading p {
-  margin: 4px 0 0;
-
-  font-size: 10px;
+.chat-heading span {
+  margin-left: 5px;
 
   color: var(--muted);
+
+  font-size: 9px;
 }
 
 
@@ -245,17 +241,18 @@ body {
 
   overflow-y: auto;
 
-  padding: 16px 13px 24px;
+  padding: 14px 11px 20px;
 
   scroll-behavior: smooth;
 }
 
 #chat::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 #chat::-webkit-scrollbar-thumb {
   background: #0b506b;
+
   border-radius: 10px;
 }
 
@@ -270,14 +267,14 @@ body {
   display: flex;
   align-items: flex-end;
 
-  gap: 8px;
+  gap: 7px;
 
-  margin-bottom: 14px;
+  margin-bottom: 13px;
 }
 
 
 /*
-  Eigen berichten naar rechts.
+  Eigen berichten rechts.
 */
 
 .message-row.own {
@@ -290,10 +287,10 @@ body {
 ========================= */
 
 .avatar {
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
 
-  min-width: 34px;
+  min-width: 32px;
 
   overflow: hidden;
 
@@ -302,8 +299,7 @@ body {
 
   border-radius: 50%;
 
-  border:
-    1px solid #15516c;
+  border: 1px solid #15516c;
 
   background:
     linear-gradient(
@@ -314,7 +310,7 @@ body {
 
   color: #c3ebff;
 
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
 }
 
@@ -333,7 +329,7 @@ body {
 
 
 /* =========================
-   CONTENT
+   MESSAGE CONTENT
 ========================= */
 
 .message-content {
@@ -348,19 +344,18 @@ body {
 
 
 /* =========================
-   NAAM + TIJD
+   META
 ========================= */
 
 .meta {
-  margin:
-    0 6px 4px;
+  min-height: 17px;
+
+  margin: 0 5px 3px;
 
   display: flex;
   align-items: center;
 
-  gap: 6px;
-
-  min-height: 18px;
+  gap: 5px;
 }
 
 .message-row.own .meta {
@@ -368,26 +363,26 @@ body {
 }
 
 .name {
-  font-size: 11px;
-  font-weight: 700;
-
   color: #edf8ff;
+
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .time {
-  font-size: 8px;
-
   color: #668da7;
+
+  font-size: 7px;
 }
 
 
 /* =========================
-   DELETE
+   DELETE PER BERICHT
 ========================= */
 
-.delete-button {
-  width: 21px;
-  height: 21px;
+.delete-message {
+  width: 20px;
+  height: 20px;
 
   padding: 0;
 
@@ -395,20 +390,20 @@ body {
   place-items: center;
 
   border: 0;
-  border-radius: 6px;
-
-  background: transparent;
-
-  color: #688ba3;
+  border-radius: 5px;
 
   cursor: pointer;
 
-  font-size: 11px;
+  color: #688ba3;
 
-  opacity: .6;
+  background: transparent;
+
+  font-size: 10px;
+
+  opacity: .55;
 }
 
-.delete-button:hover {
+.delete-message:hover {
   opacity: 1;
 
   color: var(--danger);
@@ -419,19 +414,18 @@ body {
 
 
 /* =========================
-   BUBBLE
+   BERICHTBALLON
 ========================= */
 
-.message {
-  min-width: 80px;
+.message-bubble {
+  min-width: 70px;
 
-  padding: 9px 12px;
+  padding: 8px 10px;
 
-  border:
-    1px solid #075b79;
+  border: 1px solid #075b79;
 
   border-radius:
-    6px 15px 15px 15px;
+    6px 14px 14px 14px;
 
   background:
     linear-gradient(
@@ -439,17 +433,13 @@ body {
       #071d2c,
       #04131e
     );
-
-  box-shadow:
-    0 5px 15px
-    rgba(0, 0, 0, .13);
 }
 
-.message-row.own .message {
+.message-row.own .message-bubble {
   border-color: #0c99c3;
 
   border-radius:
-    15px 6px 15px 15px;
+    14px 6px 14px 14px;
 
   background:
     linear-gradient(
@@ -460,9 +450,9 @@ body {
 }
 
 .message-text {
-  font-size: 12px;
+  font-size: 11px;
 
-  line-height: 1.45;
+  line-height: 1.4;
 
   white-space: pre-wrap;
 
@@ -471,26 +461,26 @@ body {
 
 
 /* =========================
-   LEGE CHAT
+   EMPTY
 ========================= */
 
 .empty {
-  padding: 70px 20px;
+  padding: 70px 15px;
 
   text-align: center;
 
   color: #557c97;
 
-  font-size: 12px;
+  font-size: 11px;
 }
 
 
 /* =========================
-   TYPEVAK
+   COMPOSER
 ========================= */
 
 .composer {
-  padding: 10px;
+  padding: 9px;
 
   border-top:
     1px solid
@@ -501,35 +491,33 @@ body {
 }
 
 .input-box {
-  min-height: 48px;
+  min-height: 45px;
 
   display: flex;
   align-items: stretch;
 
   overflow: hidden;
 
-  border:
-    1px solid #087da5;
+  border: 1px solid #087da5;
 
-  border-radius: 13px;
+  border-radius: 11px;
 
   background: #020e17;
 }
 
 .input-icon {
-  width: 40px;
+  width: 36px;
 
-  min-width: 40px;
+  min-width: 36px;
 
   display: grid;
   place-items: center;
 
-  border-right:
-    1px solid #075876;
+  border-right: 1px solid #075876;
 
   color: #6fb5d4;
 
-  font-size: 17px;
+  font-size: 15px;
 }
 
 #messageInput {
@@ -537,16 +525,16 @@ body {
 
   min-width: 0;
 
-  padding: 0 11px;
+  padding: 0 9px;
 
   border: 0;
   outline: 0;
 
-  background: transparent;
-
   color: white;
 
-  font-size: 12px;
+  background: transparent;
+
+  font-size: 11px;
 }
 
 #messageInput::placeholder {
@@ -554,21 +542,17 @@ body {
 }
 
 #sendButton {
-  min-width: 88px;
+  min-width: 78px;
 
-  padding: 0 12px;
+  padding: 0 9px;
 
   border: 0;
 
-  border-left:
-    1px solid #18cef6;
+  border-left: 1px solid #18cef6;
 
   cursor: pointer;
 
   color: white;
-
-  font-size: 11px;
-  font-weight: 700;
 
   background:
     linear-gradient(
@@ -576,6 +560,9 @@ body {
       #087da5,
       #12bce6
     );
+
+  font-size: 10px;
+  font-weight: 700;
 }
 
 #sendButton:hover {
@@ -594,16 +581,16 @@ body {
 ========================= */
 
 .footer {
-  padding: 7px 3px 0;
+  padding: 6px 2px 0;
 
   display: flex;
   justify-content: space-between;
 
-  gap: 10px;
+  gap: 8px;
 
   color: #547c97;
 
-  font-size: 8px;
+  font-size: 7px;
 }
 
 .footer strong {
@@ -612,174 +599,134 @@ body {
   letter-spacing: 1px;
 }
 
-
-/* =========================
-   SMALLER SCREENS
-========================= */
-
-@media (max-width: 560px) {
-
-  .page {
-    padding: 0;
-  }
-
-  .chat-app {
-    max-width: none;
-
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
-  }
-
-  .header {
-    min-height: 72px;
-  }
-
-  .brand-icon {
-    width: 39px;
-    height: 39px;
-
-    min-width: 39px;
-
-    font-size: 20px;
-  }
-
-  .brand-name {
-    font-size: 17px;
-  }
-
-  .brand-subtitle {
-    letter-spacing: 1px;
-  }
-
-  .footer strong {
-    display: none;
-  }
-
-}
-
 </style>
 </head>
 
+
 <body>
 
-<div class="page">
-
-  <div class="chat-app">
+<div class="chat-app">
 
 
-    <!-- HEADER -->
+  <!-- HEADER -->
 
-    <header class="header">
+  <header class="header">
 
-      <div class="brand">
+    <div class="brand">
 
-        <div class="brand-icon">
-          🎩
+      <div class="brand-icon">
+        🎩
+      </div>
+
+      <div>
+
+        <div class="brand-name">
+          BADFELLAS
         </div>
 
-        <div>
-
-          <div class="brand-name">
-            BADFELLAS
-          </div>
-
-          <div class="brand-subtitle">
-            GOOD PEOPLE · GREAT PROJECTS
-          </div>
-
+        <div class="brand-subtitle">
+          GOOD PEOPLE · GREAT PROJECTS
         </div>
 
       </div>
-
-
-      <div class="header-status">
-
-        Trello Chat
-
-        <div class="status-line">
-
-          <span class="online-dot"></span>
-
-          <span>Online</span>
-
-        </div>
-
-      </div>
-
-    </header>
-
-
-    <!-- CHAT TITEL -->
-
-    <div class="chat-heading">
-
-      <h1>
-        Team Chat
-      </h1>
-
-      <p>
-        Stel een vraag of stuur je team een bericht.
-      </p>
 
     </div>
 
 
-    <!-- BERICHTEN -->
+    <div class="header-actions">
 
-    <main id="chat">
+      <div class="online">
 
-      <div class="empty">
-        Berichten laden...
-      </div>
-
-    </main>
-
-
-    <!-- INVOER -->
-
-    <div class="composer">
-
-      <div class="input-box">
-
-        <div class="input-icon">
-          ✎
-        </div>
-
-        <input
-          id="messageInput"
-          type="text"
-          maxlength="1000"
-          autocomplete="off"
-          placeholder="Typ je bericht..."
-        >
-
-        <button
-          id="sendButton"
-          type="button"
-        >
-          ➤ Verstuur
-        </button>
-
-      </div>
-
-
-      <div class="footer">
+        <span class="online-dot"></span>
 
         <span>
-          Berichten worden automatisch opgeslagen
+          Online
         </span>
 
-        <strong>
-          BADFELLAS.NL
-        </strong>
-
       </div>
+
+
+      <button
+        id="deleteAllButton"
+        class="delete-all"
+        type="button"
+      >
+        🗑 Delete all
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <!-- TITEL -->
+
+  <div class="chat-heading">
+
+    <strong>
+      💬 Team Chat
+    </strong>
+
+    <span>
+      Samen sterker
+    </span>
+
+  </div>
+
+
+  <!-- BERICHTEN -->
+
+  <main id="chat">
+
+    <div class="empty">
+      Berichten laden...
+    </div>
+
+  </main>
+
+
+  <!-- INVOER -->
+
+  <div class="composer">
+
+    <div class="input-box">
+
+      <div class="input-icon">
+        ✎
+      </div>
+
+      <input
+        id="messageInput"
+        type="text"
+        maxlength="1000"
+        autocomplete="off"
+        placeholder="Typ je bericht..."
+      >
+
+      <button
+        id="sendButton"
+        type="button"
+      >
+        ➤ Verstuur
+      </button>
 
     </div>
 
 
+    <div class="footer">
+
+      <span>
+        Automatisch opgeslagen
+      </span>
+
+      <strong>
+        BADFELLAS.NL
+      </strong>
+
+    </div>
+
   </div>
+
 
 </div>
 
@@ -789,7 +736,7 @@ body {
 <script>
 
 /* =========================
-   TRELLO STARTEN
+   TRELLO
 ========================= */
 
 const t =
@@ -812,7 +759,7 @@ let currentMember = {
 
 
 /* =========================
-   HUIDIGE GEBRUIKER
+   HUIDIGE TRELLO GEBRUIKER
 ========================= */
 
 async function loadCurrentMember() {
@@ -824,9 +771,8 @@ async function loadCurrentMember() {
 
 
     /*
-      Uit onze Trello-test weten we
-      dat context.member rechtstreeks
-      de member-ID bevat.
+      De Trello-test heeft bevestigd
+      dat context.member de member-ID is.
     */
 
     if (
@@ -842,7 +788,8 @@ async function loadCurrentMember() {
 
 
     /*
-      Trello-profiel ophalen.
+      Naam, username, initialen
+      en avatar ophalen.
     */
 
     const member =
@@ -889,7 +836,7 @@ async function loadCurrentMember() {
 
 
     console.log(
-      'Ingelogde Trello gebruiker:',
+      'Trello gebruiker:',
       currentMember
     );
 
@@ -897,7 +844,7 @@ async function loadCurrentMember() {
   } catch(error) {
 
     console.error(
-      'Trello gebruiker laden mislukt:',
+      'Gebruiker laden mislukt:',
       error
     );
 
@@ -907,7 +854,7 @@ async function loadCurrentMember() {
 
 
 /* =========================
-   INITIALEN MAKEN
+   INITIALEN
 ========================= */
 
 function makeInitials(name) {
@@ -947,7 +894,7 @@ function makeInitials(name) {
 
 
 /* =========================
-   UNIEK ID
+   UNIEK BERICHT ID
 ========================= */
 
 function createMessageId() {
@@ -981,7 +928,9 @@ function createMessageId() {
 function createAvatar(message) {
 
   const avatar =
-    document.createElement('div');
+    document.createElement(
+      'div'
+    );
 
 
   avatar.className =
@@ -991,7 +940,9 @@ function createAvatar(message) {
   if (message.avatar) {
 
     const image =
-      document.createElement('img');
+      document.createElement(
+        'img'
+      );
 
 
     image.src =
@@ -1017,7 +968,9 @@ function createAvatar(message) {
       };
 
 
-    avatar.appendChild(image);
+    avatar.appendChild(
+      image
+    );
 
   } else {
 
@@ -1036,7 +989,7 @@ function createAvatar(message) {
 
 
 /* =========================
-   TIJD WEERGEVEN
+   TIJD
 ========================= */
 
 function formatTime(value) {
@@ -1092,10 +1045,10 @@ async function loadMessages(
       chat.scrollHeight -
       chat.scrollTop -
       chat.clientHeight <
-      100;
+      80;
 
 
-    const messages =
+    let messages =
       await t.get(
         'board',
         'shared',
@@ -1104,17 +1057,22 @@ async function loadMessages(
       );
 
 
+    if (!Array.isArray(messages)) {
+
+      messages = [];
+
+    }
+
+
     chat.innerHTML = '';
 
 
-    if (
-      !Array.isArray(messages) ||
-      messages.length === 0
-    ) {
+    if (!messages.length) {
 
       chat.innerHTML =
         '<div class="empty">' +
-        'Nog geen berichten.<br><br>' +
+        '💬<br><br>' +
+        'Nog geen berichten.<br>' +
         'Start het gesprek!' +
         '</div>';
 
@@ -1128,7 +1086,8 @@ async function loadMessages(
 
 
         /*
-          Is dit mijn eigen bericht?
+          Alleen berichten met dezelfde
+          Trello member-ID zijn "eigen".
         */
 
         const isOwn =
@@ -1137,10 +1096,6 @@ async function loadMessages(
           String(message.memberId) ===
           String(currentMember.id);
 
-
-        /*
-          Hele regel
-        */
 
         const row =
           document.createElement(
@@ -1162,7 +1117,7 @@ async function loadMessages(
 
 
         /*
-          Bericht content
+          Content
         */
 
         const content =
@@ -1176,7 +1131,7 @@ async function loadMessages(
 
 
         /*
-          Meta informatie
+          Meta
         */
 
         const meta =
@@ -1228,14 +1183,19 @@ async function loadMessages(
           );
 
 
-        meta.appendChild(name);
+        meta.appendChild(
+          name
+        );
 
-        meta.appendChild(time);
+
+        meta.appendChild(
+          time
+        );
 
 
         /*
-          Prullenbak alleen
-          bij eigen berichten.
+          Delete per bericht:
+          ALLEEN zichtbaar voor auteur.
         */
 
         if (isOwn) {
@@ -1251,11 +1211,17 @@ async function loadMessages(
 
 
           deleteButton.className =
-            'delete-button';
+            'delete-message';
 
 
           deleteButton.title =
             'Bericht verwijderen';
+
+
+          deleteButton.setAttribute(
+            'aria-label',
+            'Bericht verwijderen'
+          );
 
 
           deleteButton.textContent =
@@ -1293,30 +1259,30 @@ async function loadMessages(
 
 
         bubble.className =
-          'message';
+          'message-bubble';
 
 
-        const messageText =
+        const text =
           document.createElement(
             'div'
           );
 
 
-        messageText.className =
+        text.className =
           'message-text';
 
 
-        messageText.textContent =
+        text.textContent =
           message.text || '';
 
 
         bubble.appendChild(
-          messageText
+          text
         );
 
 
         /*
-          Samenstellen
+          Samenvoegen
         */
 
         content.appendChild(
@@ -1403,8 +1369,8 @@ async function sendMessage() {
 
 
     /*
-      Voor verzenden controleren we
-      opnieuw wie is ingelogd.
+      Altijd opnieuw controleren
+      welke Trello-gebruiker typt.
     */
 
     await loadCurrentMember();
@@ -1436,6 +1402,15 @@ async function sendMessage() {
 
     }
 
+
+    /*
+      Hier wordt de echte Trello
+      gebruiker bij het bericht opgeslagen.
+
+      Dus Mikka krijgt automatisch
+      zijn eigen naam/avatar wanneer hij
+      vanuit zijn eigen Trello-account typt.
+    */
 
     const newMessage = {
 
@@ -1483,7 +1458,9 @@ async function sendMessage() {
     input.value = '';
 
 
-    await loadMessages(true);
+    await loadMessages(
+      true
+    );
 
 
     input.focus();
@@ -1512,7 +1489,7 @@ async function sendMessage() {
 
 
 /* =========================
-   BERICHT VERWIJDEREN
+   ÉÉN BERICHT VERWIJDEREN
 ========================= */
 
 async function deleteMessage(
@@ -1534,11 +1511,6 @@ async function deleteMessage(
 
   try {
 
-    /*
-      Eerst opnieuw bepalen
-      wie de huidige gebruiker is.
-    */
-
     await loadCurrentMember();
 
 
@@ -1555,11 +1527,6 @@ async function deleteMessage(
       return;
     }
 
-
-    /*
-      Bericht opnieuw zoeken in
-      de nieuwste versie van de chat.
-    */
 
     let targetIndex = -1;
 
@@ -1607,8 +1574,8 @@ async function deleteMessage(
 
 
     /*
-      Extra controle:
-      alleen de auteur mag verwijderen.
+      Extra beveiliging:
+      member-ID moet overeenkomen.
     */
 
     if (
@@ -1663,7 +1630,83 @@ async function deleteMessage(
 
 
 /* =========================
-   KNOP + ENTER
+   DELETE ALL
+========================= */
+
+async function deleteAllMessages() {
+
+  /*
+    Altijd eerst bevestigen.
+  */
+
+  const confirmed =
+    window.confirm(
+      'ALLE BERICHTEN VERWIJDEREN?\n\n' +
+      'Weet je zeker dat je ALLE chatberichten wilt verwijderen?\n\n' +
+      'Dit kan niet ongedaan worden gemaakt.'
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
+  try {
+
+    const button =
+      document.getElementById(
+        'deleteAllButton'
+      );
+
+
+    button.disabled = true;
+
+
+    /*
+      Hele gedeelde berichtenlijst
+      leegmaken.
+    */
+
+    await t.set(
+      'board',
+      'shared',
+      'messages',
+      []
+    );
+
+
+    await loadMessages(
+      true
+    );
+
+
+  } catch(error) {
+
+    console.error(
+      'Delete all mislukt:',
+      error
+    );
+
+
+    alert(
+      'De berichten konden niet worden verwijderd.'
+    );
+
+
+  } finally {
+
+    document.getElementById(
+      'deleteAllButton'
+    ).disabled = false;
+
+  }
+
+}
+
+
+/* =========================
+   EVENTS
 ========================= */
 
 document
@@ -1673,6 +1716,16 @@ document
   .addEventListener(
     'click',
     sendMessage
+  );
+
+
+document
+  .getElementById(
+    'deleteAllButton'
+  )
+  .addEventListener(
+    'click',
+    deleteAllMessages
   );
 
 
@@ -1699,32 +1752,38 @@ document
 
 
 /* =========================
-   CHAT STARTEN
+   START
 ========================= */
 
 async function startChat() {
 
   /*
-    Eerst Trello-gebruiker ophalen.
-    Daarna pas de berichten tekenen.
+    Eerst gebruiker ophalen.
+    Daarna berichten tekenen.
 
-    Daardoor weten we meteen welke
-    berichten rechts moeten staan.
+    Daardoor weet de chat meteen
+    links/rechts en welke delete-knoppen
+    zichtbaar mogen zijn.
   */
 
   await loadCurrentMember();
 
-  await loadMessages(true);
+  await loadMessages(
+    true
+  );
 
 
   /*
-    Iedere 5 seconden verversen.
+    Iedere 5 seconden controleren
+    op nieuwe berichten.
   */
 
   setInterval(
     function() {
 
-      loadMessages(false);
+      loadMessages(
+        false
+      );
 
     },
     5000
