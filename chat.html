@@ -1,80 +1,442 @@
 <!DOCTYPE html>
-<html>
+<html lang="nl">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Team Chat</title>
+<title>Badfellas Trello Chat</title>
 
 <style>
+  :root {
+    --bg: #020c14;
+    --panel: #061522;
+    --panel2: #081c2b;
+    --line: #08789b;
+    --cyan: #16d5ff;
+    --blue: #159bd1;
+    --text: #eef7ff;
+    --muted: #6f9abd;
+    --green: #22df65;
+  }
 
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  background: #f4f5f7;
-}
+  * {
+    box-sizing: border-box;
+  }
 
-#chat {
-  height: 380px;
-  overflow-y: auto;
-  padding: 20px;
-}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 
-.message {
-  background: white;
-  padding: 10px 14px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-}
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--text);
+    background:
+      radial-gradient(circle at 80% 20%, rgba(8, 93, 132, .18), transparent 32%),
+      linear-gradient(135deg, #020911 0%, #03121e 55%, #020b13 100%);
+    overflow: hidden;
+  }
 
-.name {
-  font-weight: bold;
-}
+  .app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
 
-.time {
-  color: #777;
-  font-size: 12px;
-  margin-left: 8px;
-}
+  /* subtiel watermerk */
+  .watermark {
+    position: absolute;
+    right: 5%;
+    top: 23%;
+    font-size: 190px;
+    opacity: .025;
+    transform: rotate(-8deg);
+    pointer-events: none;
+    user-select: none;
+  }
 
-#input-area {
-  display: flex;
-  padding: 15px;
-  background: white;
-  border-top: 1px solid #ddd;
-}
+  /* HEADER */
 
-#message {
-  flex: 1;
-  padding: 10px;
-  font-size: 15px;
-}
+  .header {
+    min-height: 100px;
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(2, 13, 22, .92);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
+    z-index: 2;
+  }
 
-button {
-  margin-left: 10px;
-  padding: 10px 18px;
-  cursor: pointer;
-}
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
 
+  .brand-icon {
+    width: 58px;
+    height: 58px;
+    border: 1px solid #116b91;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: #74caff;
+    font-size: 30px;
+    background: linear-gradient(145deg, #071a29, #03101a);
+    box-shadow: 0 0 25px rgba(0, 173, 238, .08);
+  }
+
+  .brand-name {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: 2px;
+    font-weight: 800;
+    color: #8fd3ff;
+  }
+
+  .brand-subtitle {
+    margin-top: 8px;
+    color: #5e9bc6;
+    font-size: 10px;
+    letter-spacing: 5px;
+  }
+
+  .chat-title {
+    text-align: right;
+  }
+
+  .chat-title h1 {
+    margin: 0;
+    font-size: 25px;
+    letter-spacing: .5px;
+  }
+
+  .chat-title span {
+    display: block;
+    margin-top: 7px;
+    color: #6596bd;
+    letter-spacing: 5px;
+    font-size: 10px;
+  }
+
+  /* CHAT */
+
+  #chat {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 24px 32px;
+    scroll-behavior: smooth;
+    z-index: 1;
+  }
+
+  #chat::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  #chat::-webkit-scrollbar-thumb {
+    background: #0c526e;
+    border-radius: 20px;
+  }
+
+  .message-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 18px;
+    max-width: 720px;
+  }
+
+  .avatar {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 23px;
+    background:
+      linear-gradient(145deg, #12334b, #071724);
+    border: 1px solid #17465f;
+    box-shadow: 0 5px 16px rgba(0, 0, 0, .3);
+  }
+
+  .message {
+    min-width: 180px;
+    max-width: 620px;
+    padding: 12px 16px 14px;
+    border-radius: 18px;
+    border: 1px solid #075c7d;
+    background:
+      linear-gradient(145deg, rgba(6, 28, 43, .96), rgba(3, 18, 29, .96));
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .16);
+  }
+
+  .message-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 7px;
+  }
+
+  .name {
+    font-weight: 700;
+    color: #f4f9ff;
+    font-size: 15px;
+  }
+
+  .time {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .message-text {
+    color: #edf6fd;
+    font-size: 15px;
+    line-height: 1.45;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  .empty {
+    color: #557b98;
+    text-align: center;
+    padding-top: 80px;
+    font-size: 14px;
+  }
+
+  /* ONDERKANT */
+
+  .composer-wrapper {
+    padding: 12px 24px 14px;
+    background: rgba(2, 12, 20, .97);
+    border-top: 1px solid rgba(8, 120, 155, .35);
+    z-index: 3;
+  }
+
+  #input-area {
+    display: flex;
+    align-items: stretch;
+    min-height: 55px;
+    border: 1px solid #087da5;
+    border-radius: 16px;
+    overflow: hidden;
+    background: #020d16;
+    box-shadow:
+      0 0 0 1px rgba(0, 194, 255, .03),
+      0 8px 24px rgba(0, 0, 0, .25);
+  }
+
+  .input-icon {
+    width: 55px;
+    display: grid;
+    place-items: center;
+    color: #b7dcf5;
+    font-size: 22px;
+    border-right: 1px solid #075876;
+  }
+
+  #message {
+    flex: 1;
+    min-width: 0;
+    padding: 0 17px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: white;
+    font-size: 15px;
+  }
+
+  #message::placeholder {
+    color: #577993;
+  }
+
+  #message:focus {
+    background: rgba(9, 64, 88, .12);
+  }
+
+  #sendButton {
+    min-width: 130px;
+    border: 0;
+    border-left: 1px solid #19d6ff;
+    padding: 0 20px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    background:
+      linear-gradient(135deg, #087ca6, #12bde7);
+    transition: .15s ease;
+  }
+
+  #sendButton:hover {
+    filter: brightness(1.13);
+  }
+
+  #sendButton:active {
+    transform: scale(.98);
+  }
+
+  .footer {
+    padding: 10px 3px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    color: #6290b2;
+    font-size: 11px;
+  }
+
+  .online {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .online-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 9px rgba(34, 223, 101, .55);
+  }
+
+  .footer-brand {
+    letter-spacing: 2px;
+    text-align: right;
+  }
+
+  @media (max-width: 600px) {
+    .header {
+      min-height: 80px;
+      padding: 14px 16px;
+    }
+
+    .brand-icon {
+      width: 45px;
+      height: 45px;
+      font-size: 23px;
+    }
+
+    .brand-name {
+      font-size: 21px;
+    }
+
+    .brand-subtitle {
+      letter-spacing: 2px;
+      font-size: 8px;
+    }
+
+    .chat-title h1 {
+      font-size: 18px;
+    }
+
+    .chat-title span {
+      display: none;
+    }
+
+    #chat {
+      padding: 18px 14px;
+    }
+
+    .composer-wrapper {
+      padding: 10px;
+    }
+
+    .footer-brand {
+      display: none;
+    }
+
+    #sendButton {
+      min-width: 95px;
+      padding: 0 12px;
+    }
+  }
 </style>
 </head>
 
 <body>
 
-<div id="chat"></div>
+<div class="app">
 
-<div id="input-area">
+  <div class="watermark">🎩</div>
 
-<input
-  id="message"
-  type="text"
-  placeholder="Schrijf een bericht..."
->
+  <header class="header">
 
-<button onclick="sendMessage()">
-  Verstuur
-</button>
+    <div class="brand">
+      <div class="brand-icon">🎩</div>
+
+      <div>
+        <div class="brand-name">BADFELLAS</div>
+        <div class="brand-subtitle">
+          GOOD PEOPLE · GREAT PROJECTS
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-title">
+      <h1>Trello Chat</h1>
+      <span>SAMEN STERKER</span>
+    </div>
+
+  </header>
+
+
+  <main id="chat">
+    <div class="empty">Berichten laden...</div>
+  </main>
+
+
+  <div class="composer-wrapper">
+
+    <div id="input-area">
+
+      <div class="input-icon">✎</div>
+
+      <input
+        id="message"
+        type="text"
+        autocomplete="off"
+        maxlength="1000"
+        placeholder="Schrijf een bericht..."
+      >
+
+      <button
+        id="sendButton"
+        type="button"
+        onclick="sendMessage()"
+      >
+        ➤ Verstuur
+      </button>
+
+    </div>
+
+
+    <div class="footer">
+
+      <div class="online">
+        <span class="online-dot"></span>
+        <span>Online — berichten worden automatisch opgeslagen</span>
+      </div>
+
+      <div class="footer-brand">
+        BADFELLAS.NL &nbsp; | &nbsp; GOOD PEOPLE · GREAT PROJECTS
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
+
 
 <script src="https://p.trellocdn.com/power-up.min.js"></script>
 
@@ -82,107 +444,360 @@ button {
 
 const t = window.TrelloPowerUp.iframe();
 
-async function loadMessages() {
+let currentMember = {
+  name: 'Teamlid',
+  id: null
+};
 
-  const messages =
-    await t.get('board', 'shared', 'messages', []);
 
-  const chat = document.getElementById('chat');
+/* ---------------------------
+   GEBRUIKER
+---------------------------- */
 
-  chat.innerHTML = '';
+async function loadCurrentMember() {
 
-  messages.forEach(message => {
+  /*
+    Eerst proberen we gebruikersinformatie die Trello
+    aan de Power-Up beschikbaar stelt te gebruiken.
 
-    const div = document.createElement('div');
+    Als Trello die informatie in deze context niet
+    beschikbaar stelt, blijft de veilige fallback
+    "Teamlid" actief.
+  */
 
-    div.className = 'message';
+  try {
 
-    div.innerHTML =
-      '<span class="name">' +
-      escapeHtml(message.name) +
-      '</span>' +
+    const context = t.getContext();
 
-      '<span class="time">' +
-      escapeHtml(message.time) +
-      '</span>' +
+    if (context && context.member) {
 
-      '<br>' +
+      currentMember.id =
+        context.member.id || null;
 
-      escapeHtml(message.text);
+      currentMember.name =
+        context.member.fullName ||
+        context.member.username ||
+        'Teamlid';
 
-    chat.appendChild(div);
+    }
 
-  });
+  } catch (error) {
 
-  chat.scrollTop = chat.scrollHeight;
+    console.log(
+      'Gebruikersnaam kon niet worden geladen.',
+      error
+    );
+
+  }
+
 }
 
+
+/* ---------------------------
+   BERICHTEN LADEN
+---------------------------- */
+
+async function loadMessages() {
+
+  try {
+
+    const messages =
+      await t.get(
+        'board',
+        'shared',
+        'messages',
+        []
+      );
+
+    const chat =
+      document.getElementById('chat');
+
+    chat.innerHTML = '';
+
+    if (!messages.length) {
+
+      chat.innerHTML =
+        '<div class="empty">' +
+        'Nog geen berichten. Start het gesprek!' +
+        '</div>';
+
+      return;
+    }
+
+
+    messages.forEach(message => {
+
+      const row =
+        document.createElement('div');
+
+      row.className = 'message-row';
+
+
+      const avatar =
+        document.createElement('div');
+
+      avatar.className = 'avatar';
+
+      avatar.textContent = '👤';
+
+
+      const bubble =
+        document.createElement('div');
+
+      bubble.className = 'message';
+
+
+      const header =
+        document.createElement('div');
+
+      header.className = 'message-header';
+
+
+      const name =
+        document.createElement('span');
+
+      name.className = 'name';
+
+      name.textContent =
+        message.name || 'Teamlid';
+
+
+      const time =
+        document.createElement('span');
+
+      time.className = 'time';
+
+      time.textContent =
+        formatTime(message.time);
+
+
+      const text =
+        document.createElement('div');
+
+      text.className = 'message-text';
+
+      text.textContent =
+        message.text || '';
+
+
+      header.appendChild(name);
+      header.appendChild(time);
+
+      bubble.appendChild(header);
+      bubble.appendChild(text);
+
+      row.appendChild(avatar);
+      row.appendChild(bubble);
+
+      chat.appendChild(row);
+
+    });
+
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  } catch (error) {
+
+    console.error(
+      'Berichten konden niet worden geladen:',
+      error
+    );
+
+  }
+
+}
+
+
+/* ---------------------------
+   BERICHT VERSTUREN
+---------------------------- */
 
 async function sendMessage() {
 
-  const input = document.getElementById('message');
+  const input =
+    document.getElementById('message');
 
-  const text = input.value.trim();
+  const button =
+    document.getElementById('sendButton');
 
-  if (!text) return;
+  const text =
+    input.value.trim();
 
-  const context = t.getContext();
-
-  if (context.permissions &&
-      context.permissions.board !== 'write') {
-
-    alert('Je hebt geen toestemming om berichten te plaatsen.');
+  if (!text) {
     return;
   }
 
-  let messages =
-    await t.get('board', 'shared', 'messages', []);
 
-  messages.push({
+  try {
 
-    name: 'Teamlid',
+    const context =
+      t.getContext();
 
-    text: text,
 
-    time: new Date().toLocaleString('nl-NL')
+    if (
+      context.permissions &&
+      context.permissions.board !== 'write'
+    ) {
 
-  });
+      alert(
+        'Je hebt geen toestemming om berichten te plaatsen.'
+      );
 
-  await t.set(
-    'board',
-    'shared',
-    'messages',
-    messages
+      return;
+    }
+
+
+    button.disabled = true;
+
+
+    let messages =
+      await t.get(
+        'board',
+        'shared',
+        'messages',
+        []
+      );
+
+
+    messages.push({
+
+      name: currentMember.name,
+
+      memberId: currentMember.id,
+
+      text: text,
+
+      time: new Date().toISOString()
+
+    });
+
+
+    await t.set(
+      'board',
+      'shared',
+      'messages',
+      messages
+    );
+
+
+    input.value = '';
+
+    await loadMessages();
+
+    input.focus();
+
+  } catch (error) {
+
+    console.error(
+      'Bericht kon niet worden verstuurd:',
+      error
+    );
+
+    alert(
+      'Het bericht kon niet worden verstuurd.'
+    );
+
+  } finally {
+
+    button.disabled = false;
+
+  }
+
+}
+
+
+/* ---------------------------
+   DATUM / TIJD
+---------------------------- */
+
+function formatTime(value) {
+
+  if (!value) {
+    return '';
+  }
+
+
+  let date =
+    new Date(value);
+
+
+  /*
+    Ondersteuning voor je bestaande berichten,
+    die nog met toLocaleString() zijn opgeslagen.
+  */
+
+  if (isNaN(date.getTime())) {
+
+    return value;
+
+  }
+
+
+  return date.toLocaleString(
+    'nl-NL',
+    {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    }
   );
 
-  input.value = '';
-
-  await loadMessages();
 }
 
 
-function escapeHtml(text) {
-
-  const div = document.createElement('div');
-
-  div.textContent = text;
-
-  return div.innerHTML;
-}
-
+/* ---------------------------
+   ENTER = VERSTUREN
+---------------------------- */
 
 document
   .getElementById('message')
-  .addEventListener('keydown', function(event) {
+  .addEventListener(
+    'keydown',
+    function(event) {
 
-    if (event.key === 'Enter') {
-      sendMessage();
+      if (
+        event.key === 'Enter' &&
+        !event.shiftKey
+      ) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+      }
+
     }
+  );
 
-  });
+
+/* ---------------------------
+   START
+---------------------------- */
+
+async function startChat() {
+
+  await loadCurrentMember();
+
+  await loadMessages();
+
+  /*
+    Om de paar seconden opnieuw laden.
+    Daardoor verschijnen berichten van collega's
+    zonder dat je het venster opnieuw hoeft te openen.
+  */
+
+  setInterval(
+    loadMessages,
+    5000
+  );
+
+}
 
 
-loadMessages();
+startChat();
 
 </script>
 
