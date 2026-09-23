@@ -4,15 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Badfellas Trello Chat</title>
+<title>Badfellas Chat</title>
 
 <style>
 :root {
-  --bg: #020c14;
-  --line: #08789b;
+  --bg: #020b13;
+  --panel: #04131f;
+  --panel2: #061a29;
   --cyan: #16d5ff;
-  --text: #eef7ff;
-  --muted: #6f9abd;
+  --cyan-dark: #087da5;
+  --text: #f2f8fc;
+  --muted: #7095ae;
   --green: #22df65;
   --danger: #ff6475;
 }
@@ -31,109 +33,210 @@ body {
 body {
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
+
   background:
     radial-gradient(
-      circle at 80% 20%,
-      rgba(8, 93, 132, .18),
-      transparent 32%
+      circle at 50% 0%,
+      rgba(13, 112, 151, .16),
+      transparent 35%
     ),
-    linear-gradient(
-      135deg,
-      #020911 0%,
-      #03121e 55%,
-      #020b13 100%
-    );
+    #020b13;
+
   overflow: hidden;
 }
 
-.app {
+
+/* =========================
+   BUITENKANT
+========================= */
+
+.page {
+  width: 100%;
   height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  padding: 10px;
+}
+
+
+/*
+  Dit maakt de chat bewust smaller.
+  Op een breed Trello-scherm blijft
+  hij dus als echte chatkolom staan.
+*/
+
+.chat-app {
+  width: 100%;
+  max-width: 520px;
+  height: 100%;
+
   display: flex;
   flex-direction: column;
+
+  overflow: hidden;
+
+  border: 1px solid #075e7e;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #03111c,
+      #020b13
+    );
+
+  box-shadow:
+    0 20px 50px
+    rgba(0, 0, 0, .28);
 }
+
 
 /* =========================
    HEADER
 ========================= */
 
 .header {
-  min-height: 90px;
-  padding: 15px 28px;
+  min-height: 82px;
+
+  padding: 13px 16px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  border-bottom: 1px solid var(--line);
+  gap: 12px;
 
-  background: rgba(2, 13, 22, .94);
+  border-bottom:
+    1px solid #075e7e;
+
+  background:
+    linear-gradient(
+      135deg,
+      #061b2b,
+      #03101a
+    );
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 11px;
+
+  min-width: 0;
 }
 
 .brand-icon {
-  width: 52px;
-  height: 52px;
+  width: 45px;
+  height: 45px;
 
-  border: 1px solid #116b91;
-  border-radius: 50%;
+  min-width: 45px;
 
   display: grid;
   place-items: center;
 
-  font-size: 27px;
+  border-radius: 50%;
+
+  border:
+    1px solid #0c759b;
 
   background:
     linear-gradient(
       145deg,
-      #071a29,
-      #03101a
+      #0b2940,
+      #04131f
     );
+
+  font-size: 23px;
 }
 
 .brand-name {
-  font-size: 29px;
-  letter-spacing: 2px;
+  font-size: 19px;
   font-weight: 800;
-  color: #8fd3ff;
+
+  letter-spacing: 1.5px;
+
+  color: #9bdcff;
 }
 
 .brand-subtitle {
-  margin-top: 7px;
+  margin-top: 4px;
 
-  color: #5e9bc6;
+  font-size: 7px;
 
-  font-size: 9px;
-  letter-spacing: 5px;
+  letter-spacing: 2px;
+
+  color: #5c91b4;
+
+  white-space: nowrap;
 }
 
-.chat-title {
+.header-status {
   text-align: right;
+
+  font-size: 10px;
+
+  color: #73a2bf;
+
+  white-space: nowrap;
 }
 
-.chat-title h1 {
-  margin: 0;
-  font-size: 24px;
+.status-line {
+  margin-top: 5px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 6px;
 }
 
-.chat-title span {
-  display: block;
+.online-dot {
+  width: 7px;
+  height: 7px;
 
-  margin-top: 7px;
+  border-radius: 50%;
 
-  color: #6596bd;
+  background: var(--green);
 
-  letter-spacing: 5px;
-  font-size: 9px;
+  box-shadow:
+    0 0 8px
+    rgba(34, 223, 101, .65);
 }
 
 
 /* =========================
-   CHAT
+   TITEL
+========================= */
+
+.chat-heading {
+  padding: 13px 17px 10px;
+
+  border-bottom:
+    1px solid
+    rgba(7, 94, 126, .35);
+}
+
+.chat-heading h1 {
+  margin: 0;
+
+  font-size: 15px;
+
+  letter-spacing: .3px;
+}
+
+.chat-heading p {
+  margin: 4px 0 0;
+
+  font-size: 10px;
+
+  color: var(--muted);
+}
+
+
+/* =========================
+   BERICHTEN
 ========================= */
 
 #chat {
@@ -142,18 +245,18 @@ body {
 
   overflow-y: auto;
 
-  padding: 22px 34px 30px;
+  padding: 16px 13px 24px;
 
   scroll-behavior: smooth;
 }
 
 #chat::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 #chat::-webkit-scrollbar-thumb {
-  background: #0c526e;
-  border-radius: 20px;
+  background: #0b506b;
+  border-radius: 10px;
 }
 
 
@@ -165,17 +268,16 @@ body {
   width: 100%;
 
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
 
-  gap: 12px;
+  gap: 8px;
 
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 
 /*
-  Eigen bericht:
-  avatar en bericht naar rechts.
+  Eigen berichten naar rechts.
 */
 
 .message-row.own {
@@ -188,22 +290,20 @@ body {
 ========================= */
 
 .avatar {
-  width: 44px;
-  height: 44px;
+  width: 34px;
+  height: 34px;
 
-  min-width: 44px;
+  min-width: 34px;
 
   overflow: hidden;
-
-  border-radius: 50%;
 
   display: grid;
   place-items: center;
 
-  font-size: 13px;
-  font-weight: 800;
+  border-radius: 50%;
 
-  color: #bfeaff;
+  border:
+    1px solid #15516c;
 
   background:
     linear-gradient(
@@ -212,18 +312,14 @@ body {
       #071724
     );
 
-  border: 1px solid #17465f;
+  color: #c3ebff;
+
+  font-size: 10px;
+  font-weight: 800;
 }
 
 .message-row.own .avatar {
-  border-color: #16bde9;
-
-  background:
-    linear-gradient(
-      145deg,
-      #0b6687,
-      #073047
-    );
+  border-color: #11b8e4;
 }
 
 .avatar img {
@@ -237,11 +333,11 @@ body {
 
 
 /* =========================
-   BERICHT INHOUD
+   CONTENT
 ========================= */
 
 .message-content {
-  max-width: min(700px, 60vw);
+  max-width: 76%;
 }
 
 .message-row.own .message-content {
@@ -251,17 +347,20 @@ body {
 }
 
 
-/* naam / tijd / verwijderen */
+/* =========================
+   NAAM + TIJD
+========================= */
 
 .meta {
-  min-height: 20px;
+  margin:
+    0 6px 4px;
 
   display: flex;
   align-items: center;
 
-  gap: 9px;
+  gap: 6px;
 
-  margin: 0 7px 5px;
+  min-height: 18px;
 }
 
 .message-row.own .meta {
@@ -269,48 +368,44 @@ body {
 }
 
 .name {
+  font-size: 11px;
   font-weight: 700;
-  font-size: 13px;
 
-  color: #f4f9ff;
+  color: #edf8ff;
 }
 
 .time {
-  color: var(--muted);
-  font-size: 10px;
+  font-size: 8px;
+
+  color: #668da7;
 }
 
 
 /* =========================
-   VERWIJDERKNOP
+   DELETE
 ========================= */
 
 .delete-button {
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 21px;
 
   padding: 0;
-
-  border: 0;
-  border-radius: 7px;
-
-  cursor: pointer;
 
   display: grid;
   place-items: center;
 
-  color: #789bb5;
-
-  font-size: 12px;
+  border: 0;
+  border-radius: 6px;
 
   background: transparent;
 
-  opacity: .55;
+  color: #688ba3;
 
-  transition:
-    opacity .15s ease,
-    color .15s ease,
-    background .15s ease;
+  cursor: pointer;
+
+  font-size: 11px;
+
+  opacity: .6;
 }
 
 .delete-button:hover {
@@ -318,100 +413,113 @@ body {
 
   color: var(--danger);
 
-  background: rgba(255, 100, 117, .10);
+  background:
+    rgba(255, 100, 117, .10);
 }
 
 
 /* =========================
-   BERICHTBALLON
+   BUBBLE
 ========================= */
 
 .message {
-  min-width: 150px;
-  max-width: 100%;
+  min-width: 80px;
 
-  padding: 10px 15px;
+  padding: 9px 12px;
+
+  border:
+    1px solid #075b79;
 
   border-radius:
-    7px 18px 18px 18px;
-
-  border: 1px solid #075c7d;
+    6px 15px 15px 15px;
 
   background:
     linear-gradient(
       145deg,
-      #061c2b,
-      #03121d
+      #071d2c,
+      #04131e
     );
 
   box-shadow:
-    0 8px 20px rgba(0, 0, 0, .16);
+    0 5px 15px
+    rgba(0, 0, 0, .13);
 }
 
 .message-row.own .message {
-  border-color: #0c91bb;
+  border-color: #0c99c3;
 
   border-radius:
-    18px 7px 18px 18px;
+    15px 6px 15px 15px;
 
   background:
     linear-gradient(
       145deg,
-      #073f56,
-      #04273a
+      #07506a,
+      #063248
     );
 }
 
 .message-text {
-  font-size: 14px;
+  font-size: 12px;
+
   line-height: 1.45;
 
   white-space: pre-wrap;
+
   word-break: break-word;
-}
-
-.empty {
-  text-align: center;
-
-  padding-top: 70px;
-
-  color: #557b98;
-
-  font-size: 14px;
 }
 
 
 /* =========================
-   INPUT
+   LEGE CHAT
 ========================= */
 
-.composer-wrapper {
-  padding: 10px 20px 11px;
+.empty {
+  padding: 70px 20px;
 
-  background:
-    rgba(2, 12, 20, .98);
+  text-align: center;
 
-  border-top:
-    1px solid rgba(8, 120, 155, .35);
+  color: #557c97;
+
+  font-size: 12px;
 }
 
-#input-area {
-  display: flex;
 
+/* =========================
+   TYPEVAK
+========================= */
+
+.composer {
+  padding: 10px;
+
+  border-top:
+    1px solid
+    rgba(8, 125, 165, .4);
+
+  background:
+    rgba(2, 11, 19, .98);
+}
+
+.input-box {
   min-height: 48px;
+
+  display: flex;
+  align-items: stretch;
 
   overflow: hidden;
 
   border:
     1px solid #087da5;
 
-  border-radius: 14px;
+  border-radius: 13px;
 
-  background: #020d16;
+  background: #020e17;
 }
 
 .input-icon {
-  width: 50px;
+  width: 40px;
+
+  min-width: 40px;
 
   display: grid;
   place-items: center;
@@ -419,15 +527,17 @@ body {
   border-right:
     1px solid #075876;
 
-  font-size: 19px;
+  color: #6fb5d4;
+
+  font-size: 17px;
 }
 
-#message {
+#messageInput {
   flex: 1;
 
   min-width: 0;
 
-  padding: 0 16px;
+  padding: 0 11px;
 
   border: 0;
   outline: 0;
@@ -436,34 +546,35 @@ body {
 
   color: white;
 
-  font-size: 14px;
+  font-size: 12px;
 }
 
-#message::placeholder {
-  color: #577993;
+#messageInput::placeholder {
+  color: #55768e;
 }
 
 #sendButton {
-  min-width: 120px;
+  min-width: 88px;
+
+  padding: 0 12px;
 
   border: 0;
 
   border-left:
-    1px solid #19d6ff;
-
-  padding: 0 20px;
+    1px solid #18cef6;
 
   cursor: pointer;
 
   color: white;
 
+  font-size: 11px;
   font-weight: 700;
 
   background:
     linear-gradient(
       135deg,
-      #087ca6,
-      #12bde7
+      #087da5,
+      #12bce6
     );
 }
 
@@ -473,6 +584,7 @@ body {
 
 #sendButton:disabled {
   opacity: .5;
+
   cursor: default;
 }
 
@@ -482,226 +594,202 @@ body {
 ========================= */
 
 .footer {
-  padding: 8px 3px 0;
+  padding: 7px 3px 0;
 
   display: flex;
   justify-content: space-between;
-  align-items: center;
 
-  color: #6290b2;
+  gap: 10px;
 
-  font-size: 10px;
+  color: #547c97;
+
+  font-size: 8px;
 }
 
-.online {
-  display: flex;
-  align-items: center;
+.footer strong {
+  color: #6e9ebc;
 
-  gap: 8px;
-}
-
-.online-dot {
-  width: 8px;
-  height: 8px;
-
-  border-radius: 50%;
-
-  background: var(--green);
-
-  box-shadow:
-    0 0 8px rgba(34, 223, 101, .5);
-}
-
-.footer-brand {
-  letter-spacing: 2px;
+  letter-spacing: 1px;
 }
 
 
 /* =========================
-   MOBIEL
+   SMALLER SCREENS
 ========================= */
 
-@media (max-width: 700px) {
+@media (max-width: 560px) {
+
+  .page {
+    padding: 0;
+  }
+
+  .chat-app {
+    max-width: none;
+
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+  }
 
   .header {
-    min-height: 76px;
-    padding: 12px 15px;
+    min-height: 72px;
   }
 
   .brand-icon {
-    width: 44px;
-    height: 44px;
+    width: 39px;
+    height: 39px;
 
-    font-size: 22px;
-  }
+    min-width: 39px;
 
-  .brand-name {
     font-size: 20px;
   }
 
-  .brand-subtitle {
-    font-size: 7px;
-    letter-spacing: 2px;
-  }
-
-  .chat-title h1 {
+  .brand-name {
     font-size: 17px;
   }
 
-  .chat-title span {
+  .brand-subtitle {
+    letter-spacing: 1px;
+  }
+
+  .footer strong {
     display: none;
   }
 
-  #chat {
-    padding:
-      16px 12px 22px;
-  }
-
-  .message-content {
-    max-width:
-      calc(100vw - 85px);
-  }
-
-  .composer-wrapper {
-    padding: 8px;
-  }
-
-  .footer-brand {
-    display: none;
-  }
-
-  #sendButton {
-    min-width: 92px;
-
-    padding:
-      0 11px;
-  }
 }
 
 </style>
 </head>
 
-
 <body>
 
-<div class="app">
+<div class="page">
+
+  <div class="chat-app">
 
 
-<header class="header">
+    <!-- HEADER -->
 
-  <div class="brand">
+    <header class="header">
 
-    <div class="brand-icon">
-      🎩
-    </div>
+      <div class="brand">
 
-    <div>
+        <div class="brand-icon">
+          🎩
+        </div>
 
-      <div class="brand-name">
-        BADFELLAS
+        <div>
+
+          <div class="brand-name">
+            BADFELLAS
+          </div>
+
+          <div class="brand-subtitle">
+            GOOD PEOPLE · GREAT PROJECTS
+          </div>
+
+        </div>
+
       </div>
 
-      <div class="brand-subtitle">
-        GOOD PEOPLE · GREAT PROJECTS
+
+      <div class="header-status">
+
+        Trello Chat
+
+        <div class="status-line">
+
+          <span class="online-dot"></span>
+
+          <span>Online</span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- CHAT TITEL -->
+
+    <div class="chat-heading">
+
+      <h1>
+        Team Chat
+      </h1>
+
+      <p>
+        Stel een vraag of stuur je team een bericht.
+      </p>
+
+    </div>
+
+
+    <!-- BERICHTEN -->
+
+    <main id="chat">
+
+      <div class="empty">
+        Berichten laden...
+      </div>
+
+    </main>
+
+
+    <!-- INVOER -->
+
+    <div class="composer">
+
+      <div class="input-box">
+
+        <div class="input-icon">
+          ✎
+        </div>
+
+        <input
+          id="messageInput"
+          type="text"
+          maxlength="1000"
+          autocomplete="off"
+          placeholder="Typ je bericht..."
+        >
+
+        <button
+          id="sendButton"
+          type="button"
+        >
+          ➤ Verstuur
+        </button>
+
+      </div>
+
+
+      <div class="footer">
+
+        <span>
+          Berichten worden automatisch opgeslagen
+        </span>
+
+        <strong>
+          BADFELLAS.NL
+        </strong>
+
       </div>
 
     </div>
 
-  </div>
-
-
-  <div class="chat-title">
-
-    <h1>
-      Trello Chat
-    </h1>
-
-    <span>
-      SAMEN STERKER
-    </span>
 
   </div>
-
-</header>
-
-
-<main id="chat">
-
-  <div class="empty">
-    Berichten laden...
-  </div>
-
-</main>
-
-
-<div class="composer-wrapper">
-
-
-  <div id="input-area">
-
-    <div class="input-icon">
-      ✎
-    </div>
-
-
-    <input
-      id="message"
-      type="text"
-      maxlength="1000"
-      autocomplete="off"
-      placeholder="Schrijf een bericht..."
-    >
-
-
-    <button
-      id="sendButton"
-      type="button"
-      onclick="sendMessage()"
-    >
-      ➤ Verstuur
-    </button>
-
-  </div>
-
-
-  <div class="footer">
-
-    <div class="online">
-
-      <span class="online-dot">
-      </span>
-
-      <span>
-        Online — berichten worden automatisch opgeslagen
-      </span>
-
-    </div>
-
-
-    <div class="footer-brand">
-
-      BADFELLAS.NL
-      &nbsp; | &nbsp;
-      GOOD PEOPLE · GREAT PROJECTS
-
-    </div>
-
-  </div>
-
-
-</div>
-
 
 </div>
 
 
 <script src="https://p.trellocdn.com/power-up.min.js"></script>
 
-
 <script>
 
 /* =========================
-   TRELLO
+   TRELLO STARTEN
 ========================= */
 
 const t =
@@ -716,7 +804,7 @@ let currentMember = {
 
   username: '',
 
-  initials: '👤',
+  initials: '??',
 
   avatar: null
 
@@ -724,24 +812,22 @@ let currentMember = {
 
 
 /* =========================
-   GEBRUIKER LADEN
+   HUIDIGE GEBRUIKER
 ========================= */
 
 async function loadCurrentMember() {
 
   try {
 
-    /*
-      Dit werkte in onze test:
-
-      getContext().member
-      =
-      Trello member ID
-    */
-
     const context =
       t.getContext();
 
+
+    /*
+      Uit onze Trello-test weten we
+      dat context.member rechtstreeks
+      de member-ID bevat.
+    */
 
     if (
       context &&
@@ -756,12 +842,7 @@ async function loadCurrentMember() {
 
 
     /*
-      Dit werkte óók in onze test:
-
-      t.member()
-      =
-      naam, username,
-      initialen en avatar.
+      Trello-profiel ophalen.
     */
 
     const member =
@@ -776,12 +857,12 @@ async function loadCurrentMember() {
 
     if (member) {
 
-      currentMember.id =
-        String(
-          member.id ||
-          currentMember.id ||
-          ''
-        );
+      if (member.id) {
+
+        currentMember.id =
+          String(member.id);
+
+      }
 
 
       currentMember.name =
@@ -808,7 +889,7 @@ async function loadCurrentMember() {
 
 
     console.log(
-      'Chat gebruiker:',
+      'Ingelogde Trello gebruiker:',
       currentMember
     );
 
@@ -816,7 +897,7 @@ async function loadCurrentMember() {
   } catch(error) {
 
     console.error(
-      'Gebruiker laden mislukt:',
+      'Trello gebruiker laden mislukt:',
       error
     );
 
@@ -826,13 +907,13 @@ async function loadCurrentMember() {
 
 
 /* =========================
-   INITIALEN
+   INITIALEN MAKEN
 ========================= */
 
 function makeInitials(name) {
 
   if (!name) {
-    return '👤';
+    return '??';
   }
 
 
@@ -844,7 +925,7 @@ function makeInitials(name) {
 
 
   if (!parts.length) {
-    return '👤';
+    return '??';
   }
 
 
@@ -866,14 +947,15 @@ function makeInitials(name) {
 
 
 /* =========================
-   UNIEK BERICHT-ID
+   UNIEK ID
 ========================= */
 
 function createMessageId() {
 
   if (
     window.crypto &&
-    typeof window.crypto.randomUUID === 'function'
+    typeof window.crypto.randomUUID ===
+    'function'
   ) {
 
     return window.crypto.randomUUID();
@@ -893,7 +975,7 @@ function createMessageId() {
 
 
 /* =========================
-   AVATAR MAKEN
+   AVATAR
 ========================= */
 
 function createAvatar(message) {
@@ -954,6 +1036,43 @@ function createAvatar(message) {
 
 
 /* =========================
+   TIJD WEERGEVEN
+========================= */
+
+function formatTime(value) {
+
+  if (!value) {
+    return '';
+  }
+
+
+  const date =
+    new Date(value);
+
+
+  if (
+    isNaN(date.getTime())
+  ) {
+
+    return '';
+
+  }
+
+
+  return date.toLocaleString(
+    'nl-NL',
+    {
+      day: '2-digit',
+      month: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    }
+  );
+
+}
+
+
+/* =========================
    BERICHTEN LADEN
 ========================= */
 
@@ -964,13 +1083,10 @@ async function loadMessages(
   try {
 
     const chat =
-      document.getElementById('chat');
+      document.getElementById(
+        'chat'
+      );
 
-
-    /*
-      Onthouden of de gebruiker
-      ongeveer onderaan stond.
-    */
 
     const nearBottom =
       chat.scrollHeight -
@@ -991,11 +1107,15 @@ async function loadMessages(
     chat.innerHTML = '';
 
 
-    if (!messages.length) {
+    if (
+      !Array.isArray(messages) ||
+      messages.length === 0
+    ) {
 
       chat.innerHTML =
         '<div class="empty">' +
-        'Nog geen berichten. Start het gesprek!' +
+        'Nog geen berichten.<br><br>' +
+        'Start het gesprek!' +
         '</div>';
 
       return;
@@ -1004,12 +1124,11 @@ async function loadMessages(
 
 
     messages.forEach(
-      (message, index) => {
+      function(message, index) {
 
 
         /*
-          Bepalen of dit bericht
-          van de huidige gebruiker is.
+          Is dit mijn eigen bericht?
         */
 
         const isOwn =
@@ -1018,6 +1137,10 @@ async function loadMessages(
           String(message.memberId) ===
           String(currentMember.id);
 
+
+        /*
+          Hele regel
+        */
 
         const row =
           document.createElement(
@@ -1039,7 +1162,7 @@ async function loadMessages(
 
 
         /*
-          Content
+          Bericht content
         */
 
         const content =
@@ -1053,7 +1176,7 @@ async function loadMessages(
 
 
         /*
-          Meta
+          Meta informatie
         */
 
         const meta =
@@ -1105,18 +1228,14 @@ async function loadMessages(
           );
 
 
-        /*
-          Meta opbouwen
-        */
-
         meta.appendChild(name);
 
         meta.appendChild(time);
 
 
         /*
-          Alleen bij eigen berichten
-          verschijnt verwijderen.
+          Prullenbak alleen
+          bij eigen berichten.
         */
 
         if (isOwn) {
@@ -1139,17 +1258,12 @@ async function loadMessages(
             'Bericht verwijderen';
 
 
-          deleteButton.setAttribute(
-            'aria-label',
-            'Bericht verwijderen'
-          );
-
-
           deleteButton.textContent =
             '🗑';
 
 
-          deleteButton.onclick =
+          deleteButton.addEventListener(
+            'click',
             function() {
 
               deleteMessage(
@@ -1157,7 +1271,8 @@ async function loadMessages(
                 index
               );
 
-            };
+            }
+          );
 
 
           meta.appendChild(
@@ -1168,7 +1283,7 @@ async function loadMessages(
 
 
         /*
-          Berichtballon
+          Bubble
         */
 
         const bubble =
@@ -1181,27 +1296,27 @@ async function loadMessages(
           'message';
 
 
-        const text =
+        const messageText =
           document.createElement(
             'div'
           );
 
 
-        text.className =
+        messageText.className =
           'message-text';
 
 
-        text.textContent =
+        messageText.textContent =
           message.text || '';
 
 
         bubble.appendChild(
-          text
+          messageText
         );
 
 
         /*
-          Alles samenvoegen
+          Samenstellen
         */
 
         content.appendChild(
@@ -1263,7 +1378,7 @@ async function sendMessage() {
 
   const input =
     document.getElementById(
-      'message'
+      'messageInput'
     );
 
 
@@ -1288,9 +1403,8 @@ async function sendMessage() {
 
 
     /*
-      Voor iedere verzending nog
-      één keer de Trello-gebruiker
-      controleren.
+      Voor verzenden controleren we
+      opnieuw wie is ingelogd.
     */
 
     await loadCurrentMember();
@@ -1298,25 +1412,8 @@ async function sendMessage() {
 
     if (!currentMember.id) {
 
-      throw new Error(
-        'Geen Trello-gebruiker gevonden.'
-      );
-
-    }
-
-
-    const context =
-      t.getContext();
-
-
-    if (
-      context.permissions &&
-      context.permissions.board !==
-      'write'
-    ) {
-
       alert(
-        'Je hebt geen toestemming om berichten te plaatsen.'
+        'Je Trello-gebruiker kon niet worden gevonden.'
       );
 
       return;
@@ -1333,11 +1430,14 @@ async function sendMessage() {
       );
 
 
-    /*
-      Nieuw bericht.
-    */
+    if (!Array.isArray(messages)) {
 
-    messages.push({
+      messages = [];
+
+    }
+
+
+    const newMessage = {
 
       id:
         createMessageId(),
@@ -1364,7 +1464,12 @@ async function sendMessage() {
         new Date()
           .toISOString()
 
-    });
+    };
+
+
+    messages.push(
+      newMessage
+    );
 
 
     await t.set(
@@ -1387,7 +1492,7 @@ async function sendMessage() {
   } catch(error) {
 
     console.error(
-      'Bericht versturen mislukt:',
+      'Versturen mislukt:',
       error
     );
 
@@ -1415,25 +1520,23 @@ async function deleteMessage(
   fallbackIndex
 ) {
 
+  const confirmed =
+    window.confirm(
+      'Bericht verwijderen?\n\n' +
+      'Weet je zeker dat je dit bericht wilt verwijderen?'
+    );
+
+
+  if (!confirmed) {
+    return;
+  }
+
+
   try {
 
     /*
-      Eerst bevestiging.
-    */
-
-    const confirmed =
-      window.confirm(
-        'Weet je zeker dat je dit bericht wilt verwijderen?'
-      );
-
-
-    if (!confirmed) {
-      return;
-    }
-
-
-    /*
-      Gebruiker opnieuw controleren.
+      Eerst opnieuw bepalen
+      wie de huidige gebruiker is.
     */
 
     await loadCurrentMember();
@@ -1448,24 +1551,24 @@ async function deleteMessage(
       );
 
 
+    if (!Array.isArray(messages)) {
+      return;
+    }
+
+
     /*
-      Zoek het bericht.
-
-      Nieuwe berichten hebben
-      een uniek ID.
-
-      fallbackIndex is alleen voor
-      compatibiliteit.
+      Bericht opnieuw zoeken in
+      de nieuwste versie van de chat.
     */
 
-    const target =
-      messages.find(
-        (message, index) => {
+    let targetIndex = -1;
 
-          if (
-            messageId &&
-            message.id
-          ) {
+
+    if (messageId) {
+
+      targetIndex =
+        messages.findIndex(
+          function(message) {
 
             return (
               message.id ===
@@ -1473,18 +1576,20 @@ async function deleteMessage(
             );
 
           }
+        );
+
+    } else {
+
+      targetIndex =
+        fallbackIndex;
+
+    }
 
 
-          return (
-            index ===
-            fallbackIndex
-          );
-
-        }
-      );
-
-
-    if (!target) {
+    if (
+      targetIndex < 0 ||
+      !messages[targetIndex]
+    ) {
 
       alert(
         'Dit bericht bestaat niet meer.'
@@ -1497,9 +1602,13 @@ async function deleteMessage(
     }
 
 
+    const target =
+      messages[targetIndex];
+
+
     /*
-      Beveiliging:
-      alleen eigenaar mag verwijderen.
+      Extra controle:
+      alleen de auteur mag verwijderen.
     */
 
     if (
@@ -1519,32 +1628,10 @@ async function deleteMessage(
     }
 
 
-    /*
-      Bericht verwijderen.
-    */
-
-    if (
-      messageId &&
-      target.id
-    ) {
-
-      messages =
-        messages.filter(
-          message =>
-            message.id !==
-            messageId
-        );
-
-    } else {
-
-      messages =
-        messages.filter(
-          (message, index) =>
-            index !==
-            fallbackIndex
-        );
-
-    }
+    messages.splice(
+      targetIndex,
+      1
+    );
 
 
     await t.set(
@@ -1561,7 +1648,7 @@ async function deleteMessage(
   } catch(error) {
 
     console.error(
-      'Bericht verwijderen mislukt:',
+      'Verwijderen mislukt:',
       error
     );
 
@@ -1576,60 +1663,29 @@ async function deleteMessage(
 
 
 /* =========================
-   DATUM / TIJD
-========================= */
-
-function formatTime(value) {
-
-  if (!value) {
-    return '';
-  }
-
-
-  const date =
-    new Date(value);
-
-
-  if (
-    isNaN(
-      date.getTime()
-    )
-  ) {
-
-    return value;
-
-  }
-
-
-  return date.toLocaleString(
-    'nl-NL',
-    {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    }
-  );
-
-}
-
-
-/* =========================
-   ENTER = VERSTUREN
+   KNOP + ENTER
 ========================= */
 
 document
   .getElementById(
-    'message'
+    'sendButton'
+  )
+  .addEventListener(
+    'click',
+    sendMessage
+  );
+
+
+document
+  .getElementById(
+    'messageInput'
   )
   .addEventListener(
     'keydown',
     function(event) {
 
       if (
-        event.key ===
-        'Enter'
+        event.key === 'Enter'
       ) {
 
         event.preventDefault();
@@ -1643,17 +1699,17 @@ document
 
 
 /* =========================
-   START
+   CHAT STARTEN
 ========================= */
 
 async function startChat() {
 
   /*
-    Eerst gebruiker.
-    Daarna berichten.
+    Eerst Trello-gebruiker ophalen.
+    Daarna pas de berichten tekenen.
 
-    Dit is belangrijk voor
-    links/rechts herkenning.
+    Daardoor weten we meteen welke
+    berichten rechts moeten staan.
   */
 
   await loadCurrentMember();
@@ -1662,8 +1718,7 @@ async function startChat() {
 
 
   /*
-    Iedere 5 seconden
-    nieuwe berichten ophalen.
+    Iedere 5 seconden verversen.
   */
 
   setInterval(
