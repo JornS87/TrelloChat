@@ -34,8 +34,17 @@
     font-family: Arial, Helvetica, sans-serif;
     color: var(--text);
     background:
-      radial-gradient(circle at 80% 20%, rgba(8, 93, 132, .18), transparent 32%),
-      linear-gradient(135deg, #020911 0%, #03121e 55%, #020b13 100%);
+      radial-gradient(
+        circle at 80% 20%,
+        rgba(8, 93, 132, .18),
+        transparent 32%
+      ),
+      linear-gradient(
+        135deg,
+        #020911 0%,
+        #03121e 55%,
+        #020b13 100%
+      );
     overflow: hidden;
   }
 
@@ -47,29 +56,17 @@
     overflow: hidden;
   }
 
-  /* subtiel watermerk */
-  .watermark {
-    position: absolute;
-    right: 5%;
-    top: 23%;
-    font-size: 190px;
-    opacity: .025;
-    transform: rotate(-8deg);
-    pointer-events: none;
-    user-select: none;
-  }
-
   /* HEADER */
 
   .header {
-    min-height: 100px;
-    padding: 18px 28px;
+    min-height: 90px;
+    padding: 15px 28px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 30px;
     border-bottom: 1px solid var(--line);
-    background: rgba(2, 13, 22, .92);
+    background: rgba(2, 13, 22, .94);
     box-shadow: 0 8px 30px rgba(0, 0, 0, .25);
     z-index: 2;
   }
@@ -81,21 +78,21 @@
   }
 
   .brand-icon {
-    width: 58px;
-    height: 58px;
+    width: 52px;
+    height: 52px;
     border: 1px solid #116b91;
     border-radius: 50%;
     display: grid;
     place-items: center;
     color: #74caff;
-    font-size: 30px;
+    font-size: 27px;
     background: linear-gradient(145deg, #071a29, #03101a);
     box-shadow: 0 0 25px rgba(0, 173, 238, .08);
   }
 
   .brand-name {
     margin: 0;
-    font-size: 30px;
+    font-size: 29px;
     line-height: 1;
     letter-spacing: 2px;
     font-weight: 800;
@@ -103,9 +100,9 @@
   }
 
   .brand-subtitle {
-    margin-top: 8px;
+    margin-top: 7px;
     color: #5e9bc6;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 5px;
   }
 
@@ -115,7 +112,7 @@
 
   .chat-title h1 {
     margin: 0;
-    font-size: 25px;
+    font-size: 24px;
     letter-spacing: .5px;
   }
 
@@ -124,7 +121,7 @@
     margin-top: 7px;
     color: #6596bd;
     letter-spacing: 5px;
-    font-size: 10px;
+    font-size: 9px;
   }
 
   /* CHAT */
@@ -133,7 +130,7 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    padding: 24px 32px;
+    padding: 22px 34px 30px;
     scroll-behavior: smooth;
     z-index: 1;
   }
@@ -147,60 +144,120 @@
     border-radius: 20px;
   }
 
+  /*
+    Iedere berichtregel gebruikt de volledige breedte.
+    Daardoor kunnen eigen berichten echt rechts staan.
+  */
+
   .message-row {
+    width: 100%;
     display: flex;
     align-items: flex-start;
-    gap: 13px;
+    justify-content: flex-start;
+    gap: 12px;
     margin-bottom: 18px;
-    max-width: 720px;
+  }
+
+  /*
+    Eigen berichten worden omgedraaid:
+    avatar rechts, tekstballon daarvoor.
+  */
+
+  .message-row.own {
+    justify-content: flex-start;
+    flex-direction: row-reverse;
+  }
+
+  .message-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: min(700px, 62vw);
+  }
+
+  .message-row.own .message-content {
+    align-items: flex-end;
   }
 
   .avatar {
-    width: 46px;
-    height: 46px;
-    min-width: 46px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
     border-radius: 50%;
+    overflow: hidden;
     display: grid;
     place-items: center;
-    font-size: 23px;
-    background:
-      linear-gradient(145deg, #12334b, #071724);
+    font-size: 14px;
+    font-weight: 800;
+    color: #bfeaff;
+    background: linear-gradient(145deg, #12334b, #071724);
     border: 1px solid #17465f;
     box-shadow: 0 5px 16px rgba(0, 0, 0, .3);
   }
 
-  .message {
-    min-width: 180px;
-    max-width: 620px;
-    padding: 12px 16px 14px;
-    border-radius: 18px;
-    border: 1px solid #075c7d;
-    background:
-      linear-gradient(145deg, rgba(6, 28, 43, .96), rgba(3, 18, 29, .96));
-    box-shadow: 0 8px 20px rgba(0, 0, 0, .16);
+  .message-row.own .avatar {
+    border-color: #159bc7;
+    background: linear-gradient(145deg, #0c5671, #073047);
   }
 
-  .message-header {
+  .avatar img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .message-meta {
     display: flex;
     align-items: baseline;
-    gap: 12px;
-    margin-bottom: 7px;
+    gap: 10px;
+    margin: 0 7px 5px;
+  }
+
+  .message-row.own .message-meta {
+    flex-direction: row-reverse;
   }
 
   .name {
     font-weight: 700;
     color: #f4f9ff;
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .time {
     color: var(--muted);
-    font-size: 12px;
+    font-size: 10px;
+  }
+
+  .message {
+    min-width: 150px;
+    max-width: 100%;
+    padding: 10px 15px 11px;
+    border-radius: 7px 18px 18px 18px;
+    border: 1px solid #075c7d;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(6, 28, 43, .96),
+        rgba(3, 18, 29, .96)
+      );
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .16);
+  }
+
+  .message-row.own .message {
+    border-color: #0c91bb;
+    border-radius: 18px 7px 18px 18px;
+    background:
+      linear-gradient(
+        145deg,
+        rgba(7, 63, 86, .97),
+        rgba(4, 39, 58, .97)
+      );
   }
 
   .message-text {
     color: #edf6fd;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.45;
     word-break: break-word;
     white-space: pre-wrap;
@@ -209,15 +266,15 @@
   .empty {
     color: #557b98;
     text-align: center;
-    padding-top: 80px;
+    padding-top: 70px;
     font-size: 14px;
   }
 
   /* ONDERKANT */
 
   .composer-wrapper {
-    padding: 12px 24px 14px;
-    background: rgba(2, 12, 20, .97);
+    padding: 10px 20px 11px;
+    background: rgba(2, 12, 20, .98);
     border-top: 1px solid rgba(8, 120, 155, .35);
     z-index: 3;
   }
@@ -225,9 +282,9 @@
   #input-area {
     display: flex;
     align-items: stretch;
-    min-height: 55px;
+    min-height: 48px;
     border: 1px solid #087da5;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
     background: #020d16;
     box-shadow:
@@ -236,23 +293,23 @@
   }
 
   .input-icon {
-    width: 55px;
+    width: 50px;
     display: grid;
     place-items: center;
     color: #b7dcf5;
-    font-size: 22px;
+    font-size: 19px;
     border-right: 1px solid #075876;
   }
 
   #message {
     flex: 1;
     min-width: 0;
-    padding: 0 17px;
+    padding: 0 16px;
     border: 0;
     outline: 0;
     background: transparent;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
   }
 
   #message::placeholder {
@@ -264,16 +321,15 @@
   }
 
   #sendButton {
-    min-width: 130px;
+    min-width: 120px;
     border: 0;
     border-left: 1px solid #19d6ff;
     padding: 0 20px;
     cursor: pointer;
     color: white;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
-    background:
-      linear-gradient(135deg, #087ca6, #12bde7);
+    background: linear-gradient(135deg, #087ca6, #12bde7);
     transition: .15s ease;
   }
 
@@ -285,14 +341,19 @@
     transform: scale(.98);
   }
 
+  #sendButton:disabled {
+    opacity: .55;
+    cursor: default;
+  }
+
   .footer {
-    padding: 10px 3px 0;
+    padding: 8px 3px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
     color: #6290b2;
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .online {
@@ -302,8 +363,8 @@
   }
 
   .online-dot {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--green);
     box-shadow: 0 0 9px rgba(34, 223, 101, .55);
@@ -314,29 +375,30 @@
     text-align: right;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
+
     .header {
-      min-height: 80px;
-      padding: 14px 16px;
+      min-height: 76px;
+      padding: 12px 15px;
     }
 
     .brand-icon {
-      width: 45px;
-      height: 45px;
-      font-size: 23px;
+      width: 44px;
+      height: 44px;
+      font-size: 22px;
     }
 
     .brand-name {
-      font-size: 21px;
+      font-size: 20px;
     }
 
     .brand-subtitle {
       letter-spacing: 2px;
-      font-size: 8px;
+      font-size: 7px;
     }
 
     .chat-title h1 {
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .chat-title span {
@@ -344,11 +406,15 @@
     }
 
     #chat {
-      padding: 18px 14px;
+      padding: 16px 12px 22px;
+    }
+
+    .message-content {
+      max-width: calc(100vw - 85px);
     }
 
     .composer-wrapper {
-      padding: 10px;
+      padding: 8px;
     }
 
     .footer-brand {
@@ -356,8 +422,8 @@
     }
 
     #sendButton {
-      min-width: 95px;
-      padding: 0 12px;
+      min-width: 92px;
+      padding: 0 11px;
     }
   }
 </style>
@@ -367,11 +433,10 @@
 
 <div class="app">
 
-  <div class="watermark">🎩</div>
-
   <header class="header">
 
     <div class="brand">
+
       <div class="brand-icon">🎩</div>
 
       <div>
@@ -380,6 +445,7 @@
           GOOD PEOPLE · GREAT PROJECTS
         </div>
       </div>
+
     </div>
 
     <div class="chat-title">
@@ -424,11 +490,14 @@
 
       <div class="online">
         <span class="online-dot"></span>
-        <span>Online — berichten worden automatisch opgeslagen</span>
+        <span>
+          Online — berichten worden automatisch opgeslagen
+        </span>
       </div>
 
       <div class="footer-brand">
-        BADFELLAS.NL &nbsp; | &nbsp; GOOD PEOPLE · GREAT PROJECTS
+        BADFELLAS.NL &nbsp; | &nbsp;
+        GOOD PEOPLE · GREAT PROJECTS
       </div>
 
     </div>
@@ -444,51 +513,144 @@
 
 const t = window.TrelloPowerUp.iframe();
 
+
 let currentMember = {
+  id: null,
   name: 'Teamlid',
-  id: null
+  username: '',
+  avatar: null,
+  initials: ''
 };
 
 
 /* ---------------------------
-   GEBRUIKER
+   HUIDIGE TRELLO-GEBRUIKER
 ---------------------------- */
 
 async function loadCurrentMember() {
 
-  /*
-    Eerst proberen we gebruikersinformatie die Trello
-    aan de Power-Up beschikbaar stelt te gebruiken.
-
-    Als Trello die informatie in deze context niet
-    beschikbaar stelt, blijft de veilige fallback
-    "Teamlid" actief.
-  */
-
   try {
 
-    const context = t.getContext();
+    const member = await t.member(
+      'id',
+      'fullName',
+      'username',
+      'avatar',
+      'initials'
+    );
 
-    if (context && context.member) {
+    currentMember = {
+      id: member.id || null,
+      name:
+        member.fullName ||
+        member.username ||
+        'Teamlid',
+      username:
+        member.username || '',
+      avatar:
+        member.avatar || null,
+      initials:
+        member.initials ||
+        makeInitials(
+          member.fullName ||
+          member.username ||
+          'Teamlid'
+        )
+    };
 
-      currentMember.id =
-        context.member.id || null;
-
-      currentMember.name =
-        context.member.fullName ||
-        context.member.username ||
-        'Teamlid';
-
-    }
+    console.log(
+      'Trello-gebruiker:',
+      currentMember
+    );
 
   } catch (error) {
 
-    console.log(
-      'Gebruikersnaam kon niet worden geladen.',
+    console.error(
+      'Trello-gebruiker kon niet worden geladen:',
       error
     );
 
   }
+
+}
+
+
+/* ---------------------------
+   INITIALEN
+---------------------------- */
+
+function makeInitials(name) {
+
+  if (!name) {
+    return '👤';
+  }
+
+  const parts =
+    name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+
+  if (!parts.length) {
+    return '👤';
+  }
+
+  if (parts.length === 1) {
+    return parts[0]
+      .substring(0, 2)
+      .toUpperCase();
+  }
+
+  return (
+    parts[0][0] +
+    parts[parts.length - 1][0]
+  ).toUpperCase();
+
+}
+
+
+/* ---------------------------
+   AVATAR MAKEN
+---------------------------- */
+
+function createAvatar(message) {
+
+  const avatar =
+    document.createElement('div');
+
+  avatar.className = 'avatar';
+
+  /*
+    Nieuwe berichten bewaren avatar-informatie.
+    Oude berichten hebben dit nog niet.
+  */
+
+  if (message.avatar) {
+
+    const image =
+      document.createElement('img');
+
+    image.src = message.avatar;
+    image.alt = message.name || 'Trello gebruiker';
+
+    image.onerror = function() {
+      avatar.innerHTML = '';
+      avatar.textContent =
+        message.initials ||
+        makeInitials(message.name);
+    };
+
+    avatar.appendChild(image);
+
+  } else {
+
+    avatar.textContent =
+      message.initials ||
+      makeInitials(message.name);
+
+  }
+
+  return avatar;
 
 }
 
@@ -512,6 +674,16 @@ async function loadMessages() {
     const chat =
       document.getElementById('chat');
 
+    /*
+      Alleen automatisch helemaal naar beneden
+      als de gebruiker al ongeveer onderaan stond.
+    */
+
+    const wasNearBottom =
+      chat.scrollHeight -
+      chat.scrollTop -
+      chat.clientHeight < 100;
+
     chat.innerHTML = '';
 
     if (!messages.length) {
@@ -527,30 +699,36 @@ async function loadMessages() {
 
     messages.forEach(message => {
 
+      const isOwn =
+        !!currentMember.id &&
+        !!message.memberId &&
+        message.memberId === currentMember.id;
+
+
       const row =
         document.createElement('div');
 
-      row.className = 'message-row';
+      row.className =
+        'message-row' +
+        (isOwn ? ' own' : '');
 
 
       const avatar =
+        createAvatar(message);
+
+
+      const content =
         document.createElement('div');
 
-      avatar.className = 'avatar';
+      content.className =
+        'message-content';
 
-      avatar.textContent = '👤';
 
-
-      const bubble =
+      const meta =
         document.createElement('div');
 
-      bubble.className = 'message';
-
-
-      const header =
-        document.createElement('div');
-
-      header.className = 'message-header';
+      meta.className =
+        'message-meta';
 
 
       const name =
@@ -571,31 +749,42 @@ async function loadMessages() {
         formatTime(message.time);
 
 
+      const bubble =
+        document.createElement('div');
+
+      bubble.className = 'message';
+
+
       const text =
         document.createElement('div');
 
-      text.className = 'message-text';
+      text.className =
+        'message-text';
 
       text.textContent =
         message.text || '';
 
 
-      header.appendChild(name);
-      header.appendChild(time);
+      meta.appendChild(name);
+      meta.appendChild(time);
 
-      bubble.appendChild(header);
       bubble.appendChild(text);
 
+      content.appendChild(meta);
+      content.appendChild(bubble);
+
       row.appendChild(avatar);
-      row.appendChild(bubble);
+      row.appendChild(content);
 
       chat.appendChild(row);
 
     });
 
 
-    chat.scrollTop =
-      chat.scrollHeight;
+    if (wasNearBottom) {
+      chat.scrollTop =
+        chat.scrollHeight;
+    }
 
   } catch (error) {
 
@@ -634,7 +823,6 @@ async function sendMessage() {
     const context =
       t.getContext();
 
-
     if (
       context.permissions &&
       context.permissions.board !== 'write'
@@ -651,6 +839,16 @@ async function sendMessage() {
     button.disabled = true;
 
 
+    /*
+      Voor de zekerheid nogmaals gebruiker laden
+      wanneer die bij het openen niet beschikbaar was.
+    */
+
+    if (!currentMember.id) {
+      await loadCurrentMember();
+    }
+
+
     let messages =
       await t.get(
         'board',
@@ -662,13 +860,26 @@ async function sendMessage() {
 
     messages.push({
 
-      name: currentMember.name,
+      name:
+        currentMember.name,
 
-      memberId: currentMember.id,
+      memberId:
+        currentMember.id,
 
-      text: text,
+      username:
+        currentMember.username,
 
-      time: new Date().toISOString()
+      avatar:
+        currentMember.avatar,
+
+      initials:
+        currentMember.initials,
+
+      text:
+        text,
+
+      time:
+        new Date().toISOString()
 
     });
 
@@ -684,6 +895,16 @@ async function sendMessage() {
     input.value = '';
 
     await loadMessages();
+
+    /*
+      Na versturen altijd naar het nieuwste bericht.
+    */
+
+    const chat =
+      document.getElementById('chat');
+
+    chat.scrollTop =
+      chat.scrollHeight;
 
     input.focus();
 
@@ -717,22 +938,17 @@ function formatTime(value) {
     return '';
   }
 
-
-  let date =
+  const date =
     new Date(value);
 
-
   /*
-    Ondersteuning voor je bestaande berichten,
-    die nog met toLocaleString() zijn opgeslagen.
+    Oude berichten kunnen nog in een ander
+    datumformaat opgeslagen zijn.
   */
 
   if (isNaN(date.getTime())) {
-
     return value;
-
   }
-
 
   return date.toLocaleString(
     'nl-NL',
@@ -784,9 +1000,8 @@ async function startChat() {
   await loadMessages();
 
   /*
-    Om de paar seconden opnieuw laden.
-    Daardoor verschijnen berichten van collega's
-    zonder dat je het venster opnieuw hoeft te openen.
+    Iedere 5 seconden controleren of
+    collega's nieuwe berichten hebben geplaatst.
   */
 
   setInterval(
