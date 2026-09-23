@@ -3,15 +3,15 @@ window.TrelloPowerUp.initialize({
   'board-buttons': function(t, options) {
 
     return [{
-      text: '💬 Chat',
+      text: '🧪 Test gebruiker',
 
       callback: function(t) {
 
         return t.boardBar({
-          url: './chat.html?v=2',
+          url: './test.html?v=1',
           height: 500,
           resizable: true,
-          title: '💬 Team Chat'
+          title: '🧪 Trello gebruiker test'
         });
 
       }
