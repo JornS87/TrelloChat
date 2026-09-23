@@ -8,10 +8,15 @@ window.TrelloPowerUp.initialize({
       callback: function(t) {
 
         return t.boardBar({
-          url: './chat.html?v=10',
-          height: 500,
+          url: './chat.html?v=11',
+
+          // Hoger dan de oude 500px,
+          // zodat het meer als een echte chat voelt.
+          height: 750,
+
           resizable: true,
-          title: '💬 Team Chat'
+
+          title: '💬 Badfellas Chat'
         });
 
       }
