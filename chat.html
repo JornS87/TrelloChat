@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+
+<title>Team Chat</title>
+
+<style>
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f5f7;
+}
+
+#chat {
+  height: 380px;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.message {
+  background: white;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.time {
+  color: #777;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+#input-area {
+  display: flex;
+  padding: 15px;
+  background: white;
+  border-top: 1px solid #ddd;
+}
+
+#message {
+  flex: 1;
+  padding: 10px;
+  font-size: 15px;
+}
+
+button {
+  margin-left: 10px;
+  padding: 10px 18px;
+  cursor: pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="chat"></div>
+
+<div id="input-area">
+
+<input
+  id="message"
+  type="text"
+  placeholder="Schrijf een bericht..."
+>
+
+<button onclick="sendMessage()">
+  Verstuur
+</button>
+
+</div>
+
+<script src="https://p.trellocdn.com/power-up.min.js"></script>
+
+<script>
+
+const t = window.TrelloPowerUp.iframe();
+
+async function loadMessages() {
+
+  const messages =
+    await t.get('board', 'shared', 'messages', []);
+
+  const chat = document.getElementById('chat');
+
+  chat.innerHTML = '';
+
+  messages.forEach(message => {
+
+    const div = document.createElement('div');
+
+    div.className = 'message';
+
+    div.innerHTML =
+      '<span class="name">' +
+      escapeHtml(message.name) +
+      '</span>' +
+
+      '<span class="time">' +
+      escapeHtml(message.time) +
+      '</span>' +
+
+      '<br>' +
+
+      escapeHtml(message.text);
+
+    chat.appendChild(div);
+
+  });
+
+  chat.scrollTop = chat.scrollHeight;
+}
+
+
+async function sendMessage() {
+
+  const input = document.getElementById('message');
+
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  const context = t.getContext();
+
+  if (context.permissions &&
+      context.permissions.board !== 'write') {
+
+    alert('Je hebt geen toestemming om berichten te plaatsen.');
+    return;
+  }
+
+  let messages =
+    await t.get('board', 'shared', 'messages', []);
+
+  messages.push({
+
+    name: 'Teamlid',
+
+    text: text,
+
+    time: new Date().toLocaleString('nl-NL')
+
+  });
+
+  await t.set(
+    'board',
+    'shared',
+    'messages',
+    messages
+  );
+
+  input.value = '';
+
+  await loadMessages();
+}
+
+
+function escapeHtml(text) {
+
+  const div = document.createElement('div');
+
+  div.textContent = text;
+
+  return div.innerHTML;
+}
+
+
+document
+  .getElementById('message')
+  .addEventListener('keydown', function(event) {
+
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+
+  });
+
+
+loadMessages();
+
+</script>
+
+</body>
+</html>
